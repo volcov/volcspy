@@ -3,7 +3,7 @@ defmodule Volcspy.Scraper do
 
   @page_range 1..5
 
-  def get_reviews do
+  def get_reviews_html() do
     Stream.map(@page_range, fn page ->
       Task.async(fn -> get_and_filter_review_in_page(page) end)
     end)
