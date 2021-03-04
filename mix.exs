@@ -21,7 +21,8 @@ defmodule Volcspy.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:httpoison, "~> 1.8"}
+      {:httpoison, "~> 1.8"},
+      {:floki, "~> 0.30.0"}
     ]
   end
 end
