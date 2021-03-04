@@ -13,7 +13,7 @@ defmodule Volcspy.Scraper do
   end
 
   defp get_and_filter_review_in_page(page) do
-    site = System.get_env("VOLCSPY_BASE_URL")
+    site = Application.get_env(:volcspy, :base_url)
 
     with {:ok, html} <- get_reviews_html_per_page(site, page) do
       filter_review_entries(html)
@@ -35,7 +35,7 @@ defmodule Volcspy.Scraper do
   defp get_reviews_html_per_page(base_url, page) do
     url = base_url <> "page#{page}"
 
-    case HTTPoison.get(url) do
+    case http_client().get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, body}
 
@@ -50,5 +50,9 @@ defmodule Volcspy.Scraper do
   defp filter_review_entries(review_html_page) do
     {:ok, document} = Floki.parse_document(review_html_page)
     Floki.find(document, ".review-entry")
+  end
+
+  defp http_client() do
+    Application.get_env(:volcspy, :http_client)
   end
 end

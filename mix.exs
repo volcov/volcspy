@@ -22,7 +22,8 @@ defmodule Volcspy.MixProject do
   defp deps do
     [
       {:httpoison, "~> 1.8"},
-      {:floki, "~> 0.30.0"}
+      {:floki, "~> 0.30.0"},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 end
