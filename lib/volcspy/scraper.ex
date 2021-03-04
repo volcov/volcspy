@@ -4,13 +4,15 @@ defmodule Volcspy.Scraper do
   @page_range 1..5
 
   def get_reviews do
-    Stream.map(@page_range, fn page -> Task.async(fn -> seek_and_filter(page) end) end)
+    Stream.map(@page_range, fn page ->
+      Task.async(fn -> get_and_filter_review_in_page(page) end)
+    end)
     |> Stream.map(fn task -> Task.await(task, 10_000) end)
     |> Stream.concat()
     |> Enum.to_list()
   end
 
-  defp seek_and_filter(page) do
+  defp get_and_filter_review_in_page(page) do
     site = System.get_env("VOLCSPY_BASE_URL")
 
     with {:ok, html} <- get_reviews_html_per_page(site, page) do
