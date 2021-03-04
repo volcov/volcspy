@@ -23,7 +23,7 @@ defmodule Volcspy.Scraper do
         []
 
       _ ->
-        Logger.warn("Skipping results, unknow error")
+        Logger.warn("Skipping results, unknown error")
         []
     end
   end
