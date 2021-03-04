@@ -1,12 +1,12 @@
 defmodule Volcspy.Scraper do
   require Logger
 
-  @site "https://www.dealerrater.com/dealer/McKaig-Chevrolet-Buick-A-Dealer-For-The-People-dealer-reviews-23685/"
-  @page_range [1, 2, 3, "error", 5]
+  @site System.get_env("VOLCSPY_BASE_URL")
+  @page_range 1..5
 
   def get_reviews do
     Stream.map(@page_range, fn page -> Task.async(fn -> seek_and_filter(page) end) end)
-    |> Stream.map(fn task -> Task.await(task, 14500) end)
+    |> Stream.map(fn task -> Task.await(task, 10_000) end)
     |> Stream.concat()
     |> Enum.to_list()
   end
