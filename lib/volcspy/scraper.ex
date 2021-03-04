@@ -1,7 +1,6 @@
 defmodule Volcspy.Scraper do
   require Logger
 
-  @site System.get_env("VOLCSPY_BASE_URL")
   @page_range 1..5
 
   def get_reviews do
@@ -12,7 +11,9 @@ defmodule Volcspy.Scraper do
   end
 
   defp seek_and_filter(page) do
-    with {:ok, html} <- get_reviews_html_per_page(@site, page) do
+    site = System.get_env("VOLCSPY_BASE_URL")
+
+    with {:ok, html} <- get_reviews_html_per_page(site, page) do
       filter_review_entries(html)
     else
       {:error, :page_not_found} ->
@@ -23,6 +24,10 @@ defmodule Volcspy.Scraper do
         Logger.warn("Skipping results, unknow error")
         []
     end
+  end
+
+  defp get_reviews_html_per_page(nil, _) do
+    Logger.error("I don't have the url, please set in VOLCSPY_BASE_URL env")
   end
 
   defp get_reviews_html_per_page(base_url, page) do
