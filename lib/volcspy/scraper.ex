@@ -1,4 +1,6 @@
 defmodule Volcspy.Scraper do
+  require Logger
+
   @site "https://www.dealerrater.com/dealer/McKaig-Chevrolet-Buick-A-Dealer-For-The-People-dealer-reviews-23685/"
   @page_range [1, 2, 3, "error", 5]
 
@@ -10,8 +12,17 @@ defmodule Volcspy.Scraper do
   end
 
   defp seek_and_filter(page) do
-    {:ok, html} = get_reviews_html_per_page(@site, page)
-    filter_review_entries(html)
+    with {:ok, html} <- get_reviews_html_per_page(@site, page) do
+      filter_review_entries(html)
+    else
+      {:error, :page_not_found} ->
+        Logger.warn("Skipping results, because page not found")
+        []
+
+      _ ->
+        Logger.warn("Skipping results, unknow error")
+        []
+    end
   end
 
   defp get_reviews_html_per_page(base_url, page) do
