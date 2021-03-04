@@ -23,7 +23,7 @@ defmodule Volcspy.ScraperTest do
                Scraper.get_reviews_html()
     end
 
-    test "skips a batch if page not founded" do
+    test "skips a batch if page not found" do
       HTTPoison.BaseMock
       |> expect(:get, 4, fn _ ->
         {:ok, %HTTPoison.Response{status_code: 200, body: fake_html()}}
