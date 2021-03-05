@@ -1,18 +1,9 @@
 defmodule Volcspy do
-  @moduledoc """
-  Documentation for `Volcspy`.
-  """
+  alias Volcspy.ReviewParser
+  alias Volcspy.Scraper
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Volcspy.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def scan() do
+    reviews = Scraper.get_reviews_html()
+    ReviewParser.get_date(List.first(reviews))
   end
 end
