@@ -26,4 +26,10 @@ defmodule Volcspy.ReviewParser do
     |> List.first()
     |> Floki.text()
   end
+
+  def get_body(review) do
+    review
+    |> Floki.find(".review-content")
+    |> Floki.text()
+  end
 end

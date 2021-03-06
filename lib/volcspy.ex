@@ -7,6 +7,7 @@ defmodule Volcspy do
     # ReviewParser.get_date(List.first(reviews))
     # ReviewParser.get_title(List.first(reviews))
     # ReviewParser.get_deal_rating(List.first(reviews))
-    ReviewParser.get_user(List.first(reviews))
+    # ReviewParser.get_user(List.first(reviews))
+    ReviewParser.get_body(List.first(reviews))
   end
 end
