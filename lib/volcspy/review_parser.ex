@@ -7,6 +7,7 @@ defmodule Volcspy.ReviewParser do
   def get_title(review) do
     review
     |> Floki.find("h3")
+    |> Floki.text()
     |> String.replace("\"", "")
   end
 

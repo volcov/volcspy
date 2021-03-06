@@ -1,13 +1,20 @@
 defmodule Volcspy do
+  alias Volcspy.Review
   alias Volcspy.ReviewParser
   alias Volcspy.Scraper
 
   def scan() do
-    reviews = Scraper.get_reviews_html()
-    # ReviewParser.get_date(List.first(reviews))
-    # ReviewParser.get_title(List.first(reviews))
-    # ReviewParser.get_deal_rating(List.first(reviews))
-    # ReviewParser.get_user(List.first(reviews))
-    ReviewParser.get_body(List.first(reviews))
+    Scraper.get_reviews_html()
+    |> Enum.map(fn review_html -> build_review_map(review_html) end)
+    |> Enum.map(fn review_map -> Review.new(review_map) end)
+  end
+
+  defp build_review_map(review) do
+    %{}
+    |> Map.put(:date, ReviewParser.get_date(review))
+    |> Map.put(:title, ReviewParser.get_title(review))
+    |> Map.put(:deal_rating, ReviewParser.get_deal_rating(review))
+    |> Map.put(:user, ReviewParser.get_user(review))
+    |> Map.put(:body, ReviewParser.get_body(review))
   end
 end
