@@ -19,4 +19,11 @@ defmodule Volcspy.ReviewParser do
     |> Enum.filter(fn attribute -> String.match?(attribute, ~r/rating-\d/) end)
     |> List.first()
   end
+
+  def get_user(review) do
+    review
+    |> Floki.find("span")
+    |> List.first()
+    |> Floki.text()
+  end
 end
