@@ -14,7 +14,7 @@ defmodule Volcspy.ReviewParser do
   def get_deal_rating(review) do
     review
     |> Floki.find(".rating-static:first-child")
-    |> extract_rating()
+    |> extract_rating_number()
   end
 
   def get_user(review) do
@@ -39,13 +39,25 @@ defmodule Volcspy.ReviewParser do
   end
 
   defp format_review_rating(category_node, rating_node) do
-    category = Floki.text(category_node)
-    rating = extract_rating(rating_node)
+    category =
+      category_node
+      |> Floki.text()
+      |> String.replace(" ", "_")
+      |> String.downcase()
+
+    rating =
+      if category == "recommend_dealer" do
+        rating_node
+        |> Floki.text()
+        |> String.trim()
+      else
+        extract_rating_number(rating_node)
+      end
 
     {category, rating}
   end
 
-  defp extract_rating(rating_node) do
+  defp extract_rating_number(rating_node) do
     rating_node
     |> Floki.attribute("class")
     |> List.first()
