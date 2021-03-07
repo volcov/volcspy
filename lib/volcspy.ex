@@ -11,8 +11,12 @@ defmodule Volcspy do
 
   def scan() do
     Scraper.get_reviews_html()
-    |> Enum.map(fn review_html -> build_review_map(review_html) end)
-    |> Enum.map(fn review_map -> Review.new(review_map) end)
+    |> Enum.map(fn review_html -> build_review(review_html) end)
+    |> Enum.map(fn [review_map, review_rating] -> Review.new(review_map, review_rating) end)
+  end
+
+  defp build_review(review) do
+    [build_review_map(review), ReviewParser.get_review_ratings(review)]
   end
 
   defp build_review_map(review) do
