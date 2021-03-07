@@ -40,6 +40,12 @@ defmodule Volcspy.ReviewParser do
     end)
   end
 
+  def get_employees(review) do
+    review
+    |> Floki.find(".review-employee")
+    |> Enum.map(fn employee_node -> extract_employee_rating(employee_node) end)
+  end
+
   defp format_review_rating(category_node, rating_node) do
     category =
       category_node
@@ -66,5 +72,21 @@ defmodule Volcspy.ReviewParser do
     |> String.split()
     |> Enum.filter(fn attribute -> String.match?(attribute, ~r/rating-\d/) end)
     |> List.first()
+  end
+
+  defp extract_employee_rating(employee_node) do
+    name =
+      employee_node
+      |> Floki.find("a")
+      |> Floki.text()
+      |> String.trim()
+
+    rating =
+      employee_node
+      |> Floki.find("span")
+      |> Floki.text()
+      |> String.trim()
+
+    %{name: name, rating: rating}
   end
 end
