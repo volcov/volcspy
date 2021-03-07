@@ -35,7 +35,9 @@ defmodule Volcspy.ReviewParser do
     |> Floki.find(".review-ratings-all")
     |> Floki.find(".td")
     |> Enum.chunk_every(2)
-    |> Enum.map(fn [category, rating] -> format_review_rating(category, rating) end)
+    |> Enum.reduce(%{}, fn [category, rating], acc ->
+      Map.merge(acc, format_review_rating(category, rating))
+    end)
   end
 
   defp format_review_rating(category_node, rating_node) do
@@ -54,7 +56,7 @@ defmodule Volcspy.ReviewParser do
         extract_rating_number(rating_node)
       end
 
-    {category, rating}
+    Map.put(%{}, category, rating)
   end
 
   defp extract_rating_number(rating_node) do
