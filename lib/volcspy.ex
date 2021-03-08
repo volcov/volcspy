@@ -1,5 +1,6 @@
 defmodule Volcspy do
   alias Volcspy.Review
+  alias Volcspy.ReviewFilter
   alias Volcspy.ReviewParser
   alias Volcspy.Scraper
 
@@ -9,6 +10,7 @@ defmodule Volcspy do
     |> Enum.map(fn [review_map, review_rating, employees] ->
       Review.new(review_map, review_rating, employees)
     end)
+    |> ReviewFilter.filter()
   end
 
   defp build_review(review) do
