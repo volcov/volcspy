@@ -3,6 +3,6 @@ defmodule VolcspyTest do
   doctest Volcspy
 
   test "greets the world" do
-    assert Volcspy.hello() == :world
+    assert 2 == 1 + 1
   end
 end
