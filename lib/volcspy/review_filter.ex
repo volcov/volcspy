@@ -1,8 +1,12 @@
 defmodule Volcspy.ReviewFilter do
   def filter(review_list) do
+    count_employees_reviews(review_list)
+  end
+
+  defp count_employees_reviews(review_list) do
     review_list
-    |> Enum.map(fn review -> review.employees end)
-    |> Enum.flat_map(fn employees -> Enum.map(employees, fn employee -> employee.name end) end)
+    |> Stream.flat_map(& &1.employees)
+    |> Stream.map(& &1.name)
     |> Enum.frequencies()
   end
 end
