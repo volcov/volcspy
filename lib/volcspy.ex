@@ -10,7 +10,7 @@ defmodule Volcspy do
     |> Enum.map(fn [review_map, review_rating, employees] ->
       Review.new(review_map, review_rating, employees)
     end)
-    |> ReviewFilter.filter()
+    |> ReviewFilter.filter_suspect()
   end
 
   defp build_review(review) do
