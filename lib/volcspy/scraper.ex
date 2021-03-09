@@ -22,8 +22,8 @@ defmodule Volcspy.Scraper do
         Logger.warn("Skipping results, because page not found")
         []
 
-      error ->
-        Logger.warn("Skipping results, unknown error: #{error}", pretty: true)
+      _ ->
+        Logger.warn("Skipping results, unknown error")
         []
     end
   end
