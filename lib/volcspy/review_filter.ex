@@ -1,10 +1,10 @@
 defmodule Volcspy.ReviewFilter do
-  def filter_suspect(review_list) do
+  def filter_suspect(review_list, quantity) do
     review_list
     |> count_employees_reviews()
     |> three_most_appear()
     |> Stream.flat_map(fn {name, _count} -> find_suspect_reviews(name, review_list) end)
-    |> reviews_with_suspects_union(3)
+    |> reviews_with_suspects_union(quantity)
   end
 
   defp count_employees_reviews(review_list) do
