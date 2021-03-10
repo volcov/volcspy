@@ -2,7 +2,8 @@ defmodule Volcspy.Scraper do
   require Logger
 
   @moduledoc """
-  The Scrapper is responsible for fetching the html structure of the reviews found on the website
+  The Scrapper is responsible for fetching the html structure of the reviews
+  found on the website
   """
 
   @page_range 1..5

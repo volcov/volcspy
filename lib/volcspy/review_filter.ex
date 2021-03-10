@@ -1,4 +1,18 @@
 defmodule Volcspy.ReviewFilter do
+  @moduledoc """
+  ReviewFilter is responsible for filtering the X most suspicious reviews,
+  where X is a parameter of filter_suspect/2
+
+  the choice is made through the following steps:
+  1. sum of the number of times each employee appears in the list
+  2. selects the first three
+  3. look for the reviews that contain the set of those selected in step 2
+  """
+
+  @doc """
+  Returns a list of suspected reviews
+  """
+  @spec filter_suspect(list(), integer()) :: list()
   def filter_suspect(review_list, quantity) do
     review_list
     |> count_employees_reviews()
