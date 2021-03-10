@@ -7,7 +7,7 @@ defmodule Volcspy.Scraper do
     Stream.map(@page_range, fn page ->
       Task.async(fn -> get_and_filter_review_in_page(page) end)
     end)
-    |> Stream.map(fn task -> Task.await(task, 10_000) end)
+    |> Stream.map(fn task -> Task.await(task, 30_000) end)
     |> Stream.concat()
     |> Enum.to_list()
   end
