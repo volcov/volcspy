@@ -1,8 +1,61 @@
 defmodule Volcspy.Review do
   alias Volcspy.ReviewParser
 
+  @moduledoc """
+  Review is the structure that stores review attributes
+  """
+
   defstruct ~w[reference date deal_rating title user body review_ratings employees]a
 
+  @doc """
+  Returns a map with Review attributes
+
+  ## Example
+
+  Assuming that you have the following html_node()
+
+  node = {"div",
+  [
+   {"class",
+    "review-entry col-xs-12"}
+  ],
+  [
+   {"a", [{"attr", "xxxxxxxx"}], []},
+   {"div",
+    [
+      {"class",
+       "review-date margin-bottom-md"}
+    ],
+    ...
+    }
+  }
+
+  iex> new(node)
+  %Volcspy.Review{
+    body: "bla bla bla bla bla bla",
+    date: "January 30, 2021",
+    deal_rating: "rating-50",
+    employees: [
+      %{name: "Cel Mustard", rating: "4.0"},
+      %{name: "Miss Peach", rating: "5.0"}
+    ],
+    reference: #Reference<0.3446731673.2292187137.152936>,
+    review_ratings: %{
+      "customer_service" => "rating-50",
+      "friendliness" => "rating-40",
+      "overall_experience" => "rating-50",
+      "pricing" => "rating-50",
+      "quality_of_work" => "rating-50",
+      "recommend_dealer" => "Yes"
+    },
+    title: "A Original Title",
+    user: "- Foo Bar"
+  }
+  """
+
+  @type html_node :: {String.t(), list(), list(html_node())}
+
+  @spec new(html_node()) :: struct()
   def new(review_html) do
     [review_map, review_ratings, employees] = build_review(review_html)
 

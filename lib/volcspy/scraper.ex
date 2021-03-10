@@ -10,7 +10,7 @@ defmodule Volcspy.Scraper do
   @doc """
   Returns a list of reviews in html format to use on Floki.
 
-  ## Examples
+  ## Example
 
   iex> get_reviews_html()
   [
