@@ -38,11 +38,11 @@ defmodule Volcspy.Review do
     date: "January 30, 2021",
     deal_rating: "rating-50",
     employees: [
-      %{name: "Cel Mustard", rating: "4.0"},
-      %{name: "Miss Peach", rating: "5.0"}
+      %Volcspy.Employee{name: "Cel Mustard", rating: "4.0"},
+      %Volcspy.Employee{name: "Miss Peach", rating: "5.0"}
     ],
     reference: #Reference<0.3446731673.2292187137.152936>,
-    review_ratings: %{
+    review_ratings: %Volcspy.ReviewRating{
       "customer_service" => "rating-50",
       "friendliness" => "rating-40",
       "overall_experience" => "rating-50",
