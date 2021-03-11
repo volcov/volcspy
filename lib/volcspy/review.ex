@@ -32,7 +32,7 @@ defmodule Volcspy.Review do
     }
   }
 
-  iex> new(node)
+  iex> Review.new(node)
   %Volcspy.Review{
     body: "bla bla bla bla bla bla",
     date: "January 30, 2021",
