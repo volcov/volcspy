@@ -15,7 +15,7 @@ defmodule Volcspy.Employee do
   """
 
   @spec new(map()) :: struct()
-  def new(employee) do
+  def new(employee) when is_map(employee) do
     %__MODULE__{
       name: employee.name,
       employee_rating: employee.rating
