@@ -1,8 +1,30 @@
 defmodule Volcspy.Scraper do
   require Logger
 
+  @moduledoc """
+  The Scrapper is responsible for fetching the html structure of the reviews
+  found on the website
+  """
+
   @page_range 1..5
 
+  @doc """
+  Returns a list of reviews in html format to use on Floki.
+
+  ## Example
+
+  iex> get_reviews_html()
+  [
+  {"div", [{"class", "review-entry"}], ["FOO"]},
+  {"div", [{"class", "review-entry"}], ["BAR"]},
+  {"div", [{"class", "review-entry"}], ["BAZ"]},
+  {"div", [{"class", "review-entry"}], ["WOW"]},
+  {"div", [{"class", "review-entry"}], ["YEY"]}
+  ]
+
+  """
+
+  @spec get_reviews_html() :: list()
   def get_reviews_html() do
     Stream.map(@page_range, fn page ->
       Task.async(fn -> get_and_filter_review_in_page(page) end)
