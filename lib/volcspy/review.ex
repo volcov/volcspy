@@ -1,5 +1,7 @@
 defmodule Volcspy.Review do
+  alias Volcspy.Employee
   alias Volcspy.ReviewParser
+  alias Volcspy.ReviewRating
 
   @moduledoc """
   Review is the structure that stores review attributes
@@ -8,7 +10,7 @@ defmodule Volcspy.Review do
   defstruct ~w[reference date deal_rating title user body review_ratings employees]a
 
   @doc """
-  Returns a map with Review attributes
+  Returns a structure with Review attributes
 
   ## Example
 
@@ -72,10 +74,22 @@ defmodule Volcspy.Review do
   end
 
   defp build_review(review_html) do
+    review_map = build_review_map(review_html)
+
+    review_ratings =
+      review_html
+      |> ReviewParser.get_review_ratings()
+      |> ReviewRating.new()
+
+    employees =
+      review_html
+      |> ReviewParser.get_employees()
+      |> Enum.map(&Employee.new/1)
+
     [
-      build_review_map(review_html),
-      ReviewParser.get_review_ratings(review_html),
-      ReviewParser.get_employees(review_html)
+      review_map,
+      review_ratings,
+      employees
     ]
   end
 
