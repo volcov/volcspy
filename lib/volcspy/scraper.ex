@@ -26,12 +26,10 @@ defmodule Volcspy.Scraper do
 
   @spec get_reviews_html() :: list()
   def get_reviews_html() do
-    Stream.map(@page_range, fn page ->
-      Task.async(fn -> get_and_filter_review_in_page(page) end)
+    Task.async_stream(@page_range, fn page ->
+      get_and_filter_review_in_page(page)
     end)
-    |> Stream.map(fn task -> Task.await(task, 30_000) end)
-    |> Stream.concat()
-    |> Enum.to_list()
+    |> Enum.flat_map(fn {:ok, review} -> review end)
   end
 
   defp get_and_filter_review_in_page(page) do
