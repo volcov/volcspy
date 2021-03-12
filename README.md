@@ -1,6 +1,6 @@
 # Volcspy
 
-Volcspy is a tool to identify "forced" reviews
+Volcspy is a tool to identify "fake" reviews
 
 ## selection criteria
 
