@@ -17,7 +17,7 @@ defmodule Volcspy.ReviewFilter do
     review_list
     |> count_employees_reviews()
     |> three_most_appear()
-    |> Stream.flat_map(fn {name, _count} -> find_suspect_reviews(name, review_list) end)
+    |> Enum.flat_map(fn {name, _count} -> find_suspect_reviews(name, review_list) end)
     |> reviews_with_suspects_union(quantity)
     |> show_suspected_reviews(review_list)
   end
@@ -36,14 +36,12 @@ defmodule Volcspy.ReviewFilter do
   end
 
   defp find_suspect_reviews(suspect, review_list) do
-    review_list
-    |> Stream.filter(fn review -> worked_with?(suspect, review) end)
-    |> Enum.to_list()
+    Enum.filter(review_list, fn review -> worked_with?(suspect, review) end)
   end
 
   defp worked_with?(employee_name, review) do
     review.employees
-    |> Stream.map(& &1.name)
+    |> Enum.map(& &1.name)
     |> Enum.member?(employee_name)
   end
 
@@ -53,7 +51,7 @@ defmodule Volcspy.ReviewFilter do
     |> Enum.sort(fn {_reference_one, value_one}, {_reference_two, value_two} ->
       value_two <= value_one
     end)
-    |> Enum.slice(Range.new(0, quantity - 1))
+    |> Enum.take(quantity)
     |> Enum.map(fn {reference, _count} -> reference end)
   end
 
