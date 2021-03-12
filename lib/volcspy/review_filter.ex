@@ -32,7 +32,7 @@ defmodule Volcspy.ReviewFilter do
   defp three_most_appear(review_frequencies) do
     review_frequencies
     |> Enum.sort(fn {_name_one, value_one}, {_name_two, value_two} -> value_two <= value_one end)
-    |> Enum.slice(0..2)
+    |> Enum.take(3)
   end
 
   defp find_suspect_reviews(suspect, review_list) do
@@ -59,9 +59,7 @@ defmodule Volcspy.ReviewFilter do
 
   defp show_suspected_reviews(reference_list, review_list) do
     for reference <- reference_list do
-      review_list
-      |> Enum.filter(fn review -> review.reference == reference end)
-      |> List.first()
+      Enum.find(review_list, fn review -> review.reference == reference end)
     end
   end
 end
