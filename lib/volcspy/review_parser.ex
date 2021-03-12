@@ -1,9 +1,13 @@
 defmodule Volcspy.ReviewParser do
+  @type html_node :: {String.t(), list(), list(html_node())}
+
+  @spec get_date(html_node()) :: String.t()
   def get_date(review) do
     [{_tag_name, _attributes, [date, _type]}] = Floki.find(review, ".review-date")
     Floki.text(date)
   end
 
+  @spec get_title(html_node()) :: String.t()
   def get_title(review) do
     review
     |> Floki.find("h3")
@@ -11,12 +15,14 @@ defmodule Volcspy.ReviewParser do
     |> String.replace("\"", "")
   end
 
+  @spec get_deal_rating(html_node()) :: String.t()
   def get_deal_rating(review) do
     review
     |> Floki.find(".rating-static:first-child")
     |> extract_rating_number()
   end
 
+  @spec get_user(html_node()) :: String.t()
   def get_user(review) do
     review
     |> Floki.find("span")
@@ -24,12 +30,14 @@ defmodule Volcspy.ReviewParser do
     |> Floki.text()
   end
 
+  @spec get_body(html_node()) :: String.t()
   def get_body(review) do
     review
     |> Floki.find(".review-content")
     |> Floki.text()
   end
 
+  @spec get_review_ratings(html_node()) :: map()
   def get_review_ratings(review) do
     review
     |> Floki.find(".review-ratings-all")
@@ -40,6 +48,7 @@ defmodule Volcspy.ReviewParser do
     end)
   end
 
+  @spec get_employees(html_node()) :: list()
   def get_employees(review) do
     review
     |> Floki.find(".review-employee")
