@@ -84,4 +84,4 @@ mix test
 
 ---
 
-This is it, good investigation xD
+This is it, have a good investigation xD
