@@ -1,6 +1,5 @@
 defmodule Volcspy.Review do
   alias Volcspy.Employee
-  alias Volcspy.ReviewParser
   alias Volcspy.ReviewRating
 
   @moduledoc """
@@ -14,25 +13,7 @@ defmodule Volcspy.Review do
 
   ## Example
 
-  Assuming that you have the following html_node()
-
-  node = {"div",
-  [
-   {"class",
-    "review-entry col-xs-12"}
-  ],
-  [
-   {"a", [{"attr", "xxxxxxxx"}], []},
-   {"div",
-    [
-      {"class",
-       "review-date margin-bottom-md"}
-    ],
-    ...
-    }
-  }
-
-  iex> Review.new(node)
+  iex> Review.new(review_map, review_ratings, employees)
   %Volcspy.Review{
     body: "bla bla bla bla bla bla",
     date: "January 30, 2021",
@@ -54,51 +35,19 @@ defmodule Volcspy.Review do
     user: "- Foo Bar"
   }
   """
+  @type default :: any()
 
-  @type html_node :: {String.t(), list(), list(html_node())}
-
-  @spec new(html_node()) :: struct()
-  def new(review_html) do
-    [review_map, review_ratings, employees] = build_review(review_html)
-
+  @spec new(map(), map(), list(), default()) :: struct()
+  def new(review_map, review_ratings, employees, ref \\ make_ref()) do
     %__MODULE__{
-      reference: make_ref(),
+      reference: ref,
       date: review_map.date,
       deal_rating: review_map.deal_rating,
       title: review_map.title,
       user: review_map.user,
       body: review_map.body,
-      review_ratings: review_ratings,
-      employees: employees
+      review_ratings: ReviewRating.new(review_ratings),
+      employees: Enum.map(employees, &Employee.new/1)
     }
-  end
-
-  defp build_review(review_html) do
-    review_map = build_review_map(review_html)
-
-    review_ratings =
-      review_html
-      |> ReviewParser.get_review_ratings()
-      |> ReviewRating.new()
-
-    employees =
-      review_html
-      |> ReviewParser.get_employees()
-      |> Enum.map(&Employee.new/1)
-
-    [
-      review_map,
-      review_ratings,
-      employees
-    ]
-  end
-
-  defp build_review_map(review) do
-    %{}
-    |> Map.put(:date, ReviewParser.get_date(review))
-    |> Map.put(:title, ReviewParser.get_title(review))
-    |> Map.put(:deal_rating, ReviewParser.get_deal_rating(review))
-    |> Map.put(:user, ReviewParser.get_user(review))
-    |> Map.put(:body, ReviewParser.get_body(review))
   end
 end
