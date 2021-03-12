@@ -24,6 +24,8 @@ defmodule Volcspy.ReviewTest do
         body: "bla bla bla bla bla bla"
       }
 
+      ref = make_ref()
+
       assert %Volcspy.Review{
                body: "bla bla bla bla bla bla",
                date: "January 23, 2021",
@@ -32,7 +34,7 @@ defmodule Volcspy.ReviewTest do
                  %Volcspy.Employee{employee_rating: "4.0", name: "Foo Bar"},
                  %Volcspy.Employee{employee_rating: "5.0", name: "Ted Bear"}
                ],
-               reference: "#Reference<0.1203287560.1678508036.117791>",
+               reference: ref,
                review_ratings: %Volcspy.ReviewRating{
                  customer_service: "rating-50",
                  friendliness: "rating-40",
@@ -48,7 +50,7 @@ defmodule Volcspy.ReviewTest do
                  review_map,
                  review_rating_map,
                  employees,
-                 "#Reference<0.1203287560.1678508036.117791>"
+                 ref
                )
     end
   end
